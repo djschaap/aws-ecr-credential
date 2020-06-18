@@ -8,7 +8,7 @@ metadata:
 spec:
   schedule: "* */8 * * *"
   successfulJobsHistoryLimit: 2
-  failedJobsHistoryLimit: 2  
+  failedJobsHistoryLimit: 2
   jobTemplate:
     spec:
       backoffLimit: 4
@@ -25,12 +25,12 @@ spec:
             imagePullPolicy: IfNotPresent
             image: {{ .Values.jobImage }}:{{ .Values.jobImageTag }}
             env:
-              - name: AWS_ACCESS_KEY_ID
+              - name: ACCESS_KEY_ID
                 valueFrom:
                   secretKeyRef:
                     name: {{ include "aws-ecr-credential.secret" . }}
                     key: AWS_ACCESS_KEY_ID
-              - name: AWS_SECRET_ACCESS_KEY
+              - name: SECRET_ACCESS_KEY
                 valueFrom:
                   secretKeyRef:
                     name: {{ include "aws-ecr-credential.secret" . }}
@@ -41,19 +41,21 @@ spec:
             - |
               AWS_ACCOUNT={{ .Values.aws.account }}
               AWS_REGION={{ .Values.aws.region }}
-              echo "AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID"
-              echo "AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY"
               echo "AWS_ACCOUNT=$AWS_ACCOUNT"
               echo "AWS_REGION=$AWS_REGION"
+
+              aws configure set aws_access_key_id $(ACCESS_KEY_ID)
+              aws configure set aws_secret_access_key $(SECRET_ACCESS_KEY)
+
               DOCKER_REGISTRY_SERVER=https://${AWS_ACCOUNT}.dkr.ecr.${AWS_REGION}.amazonaws.com
               DOCKER_USER=AWS
-              DOCKER_PASSWORD=`aws ecr get-login --region ${AWS_REGION} --registry-ids ${AWS_ACCOUNT} | cut -d' ' -f6`
+              DOCKER_PASSWORD=$(aws ecr get-login-password --region ${AWS_REGION})
 
               echo "DOCKER_REGISTRY_SERVER=$DOCKER_REGISTRY_SERVER"
               echo "DOCKER_USER=$DOCKER_USER"
               echo "DOCKER_PASSWORD=$DOCKER_PASSWORD"
 
-              kubectl delete secret --namespace {{ .Values.targetNamespace }} aws-registry || true
+              kubectl delete secret --namespace {{ .Values.targetNamespace }} aws-registry --ignore-not-found=true
               kubectl create secret --namespace {{ .Values.targetNamespace }} docker-registry aws-registry \
               --docker-server=$DOCKER_REGISTRY_SERVER \
               --docker-username=$DOCKER_USER \
