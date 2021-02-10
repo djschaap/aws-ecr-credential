@@ -22,8 +22,8 @@ spec:
           restartPolicy: Never
           containers:
           - name: kubectl
-            imagePullPolicy: IfNotPresent
-            image: {{ .Values.jobImage }}:{{ .Values.jobImageTag }}
+            imagePullPolicy: {{ .Values.image.pullPolicy }}
+            image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
             env:
               - name: ACCESS_KEY_ID
                 valueFrom:
@@ -63,4 +63,3 @@ spec:
               --docker-email=no@email.local
 
               kubectl patch serviceaccount default -p '{"imagePullSecrets":[{"name":"aws-registry"}]}'
-
