@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "properties": {
+    "aws": {
+      "description": "", 
+      "additionalProperties": false,
+      "properties": {
+        "accessKeyId": {
+          "type": "string"
+        },
+        "account": {
+          "type": "string"
+        },
+        "region": {
+          "type": "string"
+        },
+        "secretAccessKey": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "accessKeyId",
+        "account",
+        "region",
+        "secretAccessKey"
+      ],
+      "type": "object"
+    },  
+    "cron": {
+      "description": "", 
+      "properties": {
+        "failedJobsHistoryLimit": {
+          "type": "integer"
+        },
+        "schedule": {
+          "type": "string"
+        },
+        "successfulJobsHistoryLimit": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "schedule",
+        "failedJobsHistoryLimit",
+        "successfulJobsHistoryLimit"
+      ],
+      "type": "object"
+    },  
+    "image": {
+      "description": "", 
+      "properties": {
+        "pullPolicy": {
+          "type": "string"
+        },
+        "repository": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "pullPolicy",
+        "repository"
+      ],
+      "type": "object"
+    },  
+    "targetNamespace": {
+      "description": "", 
+      "type": "string"
+    }   
+  },  
+  "required": [
+    "aws",
+    "cron",
+    "image",
+    "targetNamespace"
+  ],  
+  "title": "Values",
+  "type": "object"
+}
