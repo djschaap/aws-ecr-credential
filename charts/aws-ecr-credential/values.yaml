@@ -11,6 +11,11 @@ aws:
   accessKeyId: "" # base64
   secretAccessKey: "" # base64
 
+cron:
+  schedule: "8 */8 * * *"
+  failedJobsHistoryLimit: 2
+  successfulJobsHistoryLimit: 2
+
 image:
   repository: djschaap/aws-kubectl
   pullPolicy: IfNotPresent

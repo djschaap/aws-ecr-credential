@@ -6,9 +6,9 @@ metadata:
   labels:
 {{ include "aws-ecr-credential.labels" . | indent 4 }}
 spec:
-  schedule: "* */8 * * *"
-  successfulJobsHistoryLimit: 2
-  failedJobsHistoryLimit: 2
+  schedule: "{{ .Values.cron.schedule }}"
+  failedJobsHistoryLimit: {{ .Values.cron.failedJobsHistoryLimit }}
+  successfulJobsHistoryLimit: {{ .Values.cron.successfulJobsHistoryLimit }}
   jobTemplate:
     spec:
       backoffLimit: 4
