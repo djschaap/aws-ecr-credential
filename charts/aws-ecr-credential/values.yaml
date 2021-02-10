@@ -13,4 +13,3 @@ aws:
 
 jobImage: uesleilima/aws-kubectl
 jobImageTag: 2.0.23-1.18.4
-

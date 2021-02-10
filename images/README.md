@@ -1,5 +1,9 @@
-## uesleilima/aws-kubectl:2.0.23-1.18.4
+# aws-kubectl image
+
+## Build image
 ```bash
-docker build -t uesleilima/aws-kubectl:2.0.23-1.18.4 aws-kubectl/ && \
-docker push uesleilima/aws-kubectl:2.0.23-1.18.4
+DOCKER_HUB_USER=CHANGEME
+VERSION=2.0.23-1.18.4
+docker build -t ${DOCKER_HUB_USER}/aws-kubectl:${VERSION} aws-kubectl && \
+  docker push ${DOCKER_HUB_USER}/aws-kubectl:${VERSION}
 ```

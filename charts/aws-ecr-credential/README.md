@@ -4,12 +4,15 @@ This Chart seemlessly integrate Kubernetes with AWS ECR
 
 Simply deploy this chart to your kubernetes cluster and you will be able to pull and run images from your AWS ECR (Elastic Container Registry) in your cluster.
 
-# Usage
+## Usage
 
-Run the following command to install this chart
+Run the following commands to install this chart
 
 ```sh
-helm install --name aws-ecr-credential architectminds/aws-ecr-credential \
+helm repo add aws-ecr https://djschaap.github.io/aws-ecr-credential
+helm repo update
+
+helm install --name aws-ecr-credential aws-ecr/aws-ecr-credential \
   --set-string aws.account=<aws account nubmer> \
   --set aws.region=<aws region> \
   --set aws.accessKeyId=<base64> \
@@ -17,9 +20,9 @@ helm install --name aws-ecr-credential architectminds/aws-ecr-credential \
   --set targetNamespace=default
 ```
 
-That chart will create a secret object names `aws-registry`.
+That chart will create a Secret in targetNamespace named `aws-registry`.
 
-In you kubernetes deployment use `imagePullSecrets: aws-registry`.
+In your kubernetes Deployment Pod spec, use `imagePullSecrets: aws-registry`.
 
 Example:
 ```yaml
