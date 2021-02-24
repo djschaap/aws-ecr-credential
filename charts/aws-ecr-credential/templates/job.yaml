@@ -46,6 +46,11 @@ spec:
           DOCKER_USER=AWS
           DOCKER_PASSWORD=$(aws ecr get-login-password --region ${AWS_REGION})
 
+          if [ "$DOCKER_PASSWORD" = "" ] ; then
+            echo "FATAL ERROR: did not get docker password"
+            exit 1
+          fi
+
           echo "DOCKER_REGISTRY_SERVER=$DOCKER_REGISTRY_SERVER"
           echo "DOCKER_USER=$DOCKER_USER"
           echo "DOCKER_PASSWORD=$DOCKER_PASSWORD"
